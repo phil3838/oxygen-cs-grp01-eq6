@@ -65,6 +65,7 @@ class Main:
             date = data[0]["date"]
             temperature = float(data[0]["data"])
             self.take_action(temperature)
+            ##  Insert in DB, temperature + timestamp here 
         except Exception as err:
             print(err, flush=True)
 
