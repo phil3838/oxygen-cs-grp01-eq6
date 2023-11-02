@@ -31,6 +31,10 @@ jobs:
         pip install pipenv
         pipenv install --deploy --ignore-pipfile
 
+    - name: List installed packages
+      run: |
+        pipenv run pip freeze
+
     - name: Run unit tests
       run: |
         pipenv run python3 -m unittest discover -s ./test
