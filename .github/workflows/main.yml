@@ -33,12 +33,12 @@ jobs:
 
     - name: Run unit tests
       run: |
-        pipenv run test # Replace with your actual test command
+        python3 -m unittest discover -s ./test
 
     - name: Static code analysis and format
       run: |
-        # Use pipenv if you have Python linting/formating tools installed
         pipenv run lint
+        pipenv run format
         pipenv run format-check
 
     - name: Login to DockerHub
