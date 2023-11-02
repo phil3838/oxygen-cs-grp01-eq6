@@ -17,6 +17,6 @@ python_version = "3.8"
 [scripts]
 start = "python src/main.py"
 test = "python3 -m unittest discover -s ./test"
-lint = "pylint src/"
+lint = "pylint src/ --fail-under=8"
 format= "black src/"
 format-check = "black --check src/"

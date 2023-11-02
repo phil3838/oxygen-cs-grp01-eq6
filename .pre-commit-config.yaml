@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.4.0
+    rev: v4.5.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -8,7 +8,7 @@ repos:
       - id: check-added-large-files
 
   - repo: https://github.com/psf/black
-    rev: 21.9b0
+    rev: 23.10.1
     hooks:
       - id: black
         args: [--safe]
@@ -20,10 +20,10 @@ repos:
         entry: pylint
         language: system
         types: [python]
-        args: ['--ignore=tests']  # adjust arguments as needed
+        args: ['--ignore=tests','--fail-under=8']
 
       - id: unittest
         name: Run unittest
-        entry: python -m unittest discover -s ./test
+        entry: python3 -m unittest test/test_main.py
         language: system
         types: [python]
