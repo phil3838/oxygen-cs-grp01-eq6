@@ -1,0 +1,53 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.local/share/virtualenvs
+        key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-pipenv-
+
+    - name: Install Dependencies
+      run: |
+        pip install pipenv
+        pipenv install --deploy --ignore-pipfile
+
+    - name: Run unit tests
+      run: |
+        pipenv run test # Replace with your actual test command
+
+    - name: Static code analysis and format
+      run: |
+        # Use pipenv if you have Python linting/formating tools installed
+        pipenv run lint
+        pipenv run format-check
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+    - name: Build and push Docker image
+      run: |
+        docker build -t your-dockerhub-username/your-repo-name:latest .
+        docker push your-dockerhub-username/your-repo-name:latest
