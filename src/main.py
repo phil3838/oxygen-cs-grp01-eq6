@@ -31,7 +31,7 @@ class Main:
             self._hub_connection.stop()
 
     def setup(self):
-        """Setup Oxygen CS."""
+        """Setup Oxygen CS"""
         self.set_sensorhub()
 
     def start(self):
