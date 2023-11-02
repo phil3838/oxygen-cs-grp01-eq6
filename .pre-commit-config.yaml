@@ -22,8 +22,8 @@ repos:
         types: [python]
         args: ['--ignore=tests']  # adjust arguments as needed
 
-      - id: pytest
-        name: Run pytest
-        entry: pytest
+      - id: unittest
+        name: Run unittest
+        entry: python -m unittest discover -s ./test
         language: system
         types: [python]

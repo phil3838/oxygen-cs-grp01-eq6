@@ -8,11 +8,15 @@ requests = "*"
 signalrcore = "*"
 
 [dev-packages]
+pylint = "*"
+black = "*"
 
 [requires]
 python_version = "3.8"
 
 [scripts]
 start = "python src/main.py"
-test = "# To implement"
-lint = "# To implement"
+test = "python3 -m unittest discover -s ./test"
+lint = "pylint src/"
+format= "black src/"
+format-check = "black --check src/"
