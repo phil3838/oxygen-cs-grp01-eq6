@@ -33,7 +33,7 @@ jobs:
 
     - name: Run unit tests
       run: |
-        python3 -m unittest discover -s ./test
+        pipenv run python3 -m unittest discover -s ./test
 
     - name: Static code analysis and format
       run: |
