@@ -54,4 +54,6 @@ jobs:
     - name: Build and push Docker image
       run: |
         docker build -t equipe06log680/oxygen .
+        docker tag equipe06log680/oxygen:latest equipe06log680/oxygen:${{ github.run_id }}
         docker push equipe06log680/oxygen:latest
+        docker push equipe06log680/oxygen:${{ github.run_id }}
