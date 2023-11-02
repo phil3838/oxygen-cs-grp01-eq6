@@ -53,5 +53,5 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker build -t your-dockerhub-username/your-repo-name:latest .
-        docker push your-dockerhub-username/your-repo-name:latest
+        docker build -t equipe06log680/oxygen .
+        docker push equipe06log680/oxygen:latest
