@@ -30,7 +30,7 @@ class TestMain(unittest.TestCase):
         result = self.main.send_action_to_hvac(action)
 
         expected_url = (
-            f"{self.main.host}/api/hvac/{self.main.token}/{action}/{self.main.TICKETS}"
+            f"{self.main.host}/api/hvac/{self.main.token}/{action}/{self.main.tickets}"
         )
         mock_get.assert_called_once_with(expected_url)
         self.assertEqual(
