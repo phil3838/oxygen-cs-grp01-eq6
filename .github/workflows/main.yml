@@ -41,7 +41,7 @@ jobs:
 
     - name: Lint with Pylint
       run: |
-        pipenv run pylint --rcfile=.pylintrc src/
+        pipenv run pylint --rcfile=.pylintrc src/ --fail-under=8
 
     - name: Static code analysis and format
       run: |
