@@ -35,19 +35,15 @@ class Crud:
         try:
             cursor = self.connection.cursor()
 
-            match table:
-                case Table.KANBAN:
-                    insert_query = "INSERT INTO kanban (name, value) VALUES (%s, %s)"
-
-                case Table.VISUALIZATION:
-                    insert_query = (
-                        "INSERT INTO visualisation (name, value) VALUES (%s, %s)"
-                    )
-
-                case Table.PULL_REQUESTS:
-                    insert_query = (
-                        "INSERT INTO pull_requests (name, value) VALUES (%s, %s)"
-                    )
+            if table == Table.HVAC:
+                insert_query = (
+                    "INSERT INTO hvac (name, value) VALUES (%s, %s)"
+                )
+            
+            elif table == Table.HVAC_EVENTS:
+                insert_query = (
+                    "INSERT INTO hvac_events (name, value) VALUES (%s, %s)"
+                )
 
             cursor.execute(insert_query, (metric_name, metric_value))
 
@@ -65,15 +61,12 @@ class Crud:
         try:
             cursor = self.connection.cursor()
 
-            match table:
-                case Table.KANBAN:
-                    select_query = "SELECT * FROM kanban"
+            if table == Table.HVAC:
+                select_query = "SELECT * FROM hvac"
 
-                case Table.VISUALIZATION:
-                    select_query = "SELECT * FROM visualisation"
+            elif table == Table.HVAC_EVENTS:
+                select_query = "SELECT * FROM hvac_events"
 
-                case Table.PULL_REQUESTS:
-                    select_query = "SELECT * FROM pull_requests"
 
             # Select all metrics
             cursor.execute(select_query)
@@ -91,16 +84,12 @@ class Crud:
     def update_metric(self, table: Table, metric_id, new_value):
         try:
             cursor = self.connection.cursor()
-
-            match table:
-                case Table.KANBAN:
-                    update_query = "UPDATE kanban SET value = %s WHERE id = %s"
-
-                case Table.VISUALIZATION:
-                    update_query = "UPDATE visualisation SET value = %s WHERE id = %s"
-
-                case Table.PULL_REQUESTS:
-                    update_query = "UPDATE pull_requests SET value = %s WHERE id = %s"
+            
+            if table == Table.HVAC:
+                update_query = "UPDATE hvac SET value = %s WHERE id = %s"
+                
+            elif table == Table.HVAC_EVENTS:
+                update_query = "UPDATE hvac_events SET value = %s WHERE id = %s"
 
             # Update a metric by metric_id
             cursor.execute(update_query, (new_value, metric_id))
@@ -118,16 +107,12 @@ class Crud:
         try:
             cursor = self.connection.cursor()
 
-            match table:
-                case Table.KANBAN:
-                    delete_query = "DELETE FROM kanban WHERE id = %s"
-
-                case Table.VISUALIZATION:
-                    delete_query = "DELETE FROM visualisation WHERE id = %s"
-
-                case Table.PULL_REQUESTS:
-                    delete_query = "DELETE FROM pull_requests WHERE id = %s"
-
+            if table == Table.HVAC:
+                delete_query = "DELETE FROM hvac WHERE id = %s"
+                
+            elif table == Table.HVAC_EVENTS:
+                delete_query = "DELETE FROM hvac_events WHERE id = %s"
+    
             cursor.execute(delete_query, (metric_id,))
             self.connection.commit()
 
