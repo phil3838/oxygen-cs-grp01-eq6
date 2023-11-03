@@ -3,7 +3,7 @@ This module servesss to fetch the data and insert them in the database.
 """
 import json
 import time
-from crud import Crud, Table
+from src.crud import Crud, Table
 import logging
 import requests
 from signalrcore.hub_connection_builder import HubConnectionBuilder
