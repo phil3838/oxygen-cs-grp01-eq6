@@ -39,10 +39,10 @@ class TestMain(unittest.TestCase):
 
     def test_take_action(self):
         with patch.object(self.main, "send_action_to_hvac") as mock_send_action:
-            self.main.take_action(self.main.T_MAX + 1)
+            self.main.take_action(self.main.t_max + 1)
             mock_send_action.assert_called_with("TurnOnAc")
 
-            self.main.take_action(self.main.T_MIN - 1)
+            self.main.take_action(self.main.t_min - 1)
             mock_send_action.assert_called_with("TurnOnHeater")
 
 
