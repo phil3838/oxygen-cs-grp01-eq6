@@ -3,11 +3,10 @@ This module servesss to fetch the data and insert them in the database.
 """
 import json
 import time
+from crud import Crud, Table
 import logging
 import requests
-
 from signalrcore.hub_connection_builder import HubConnectionBuilder
-
 
 class Main:
     """
@@ -20,11 +19,10 @@ class Main:
         self._hub_connection = None
         self.host = "https://hvac-simulator-a23-y2kpq.ondigitalocean.app"  # Setup your host here
         self.token = "S1rN2enD5p"  # Setup your token here
-
-        self.tickets = 2  # Setup your tickets here
-        self.t_max = 40  # Setup your max temperature here
-        self.t_min = 10  # Setup your min temperature here
-        self.database = None  # Setup your database here
+        self.TICKETS = 2  # Setup your tickets here
+        self.T_MAX = 40  # Setup your max temperature here
+        self.T_MIN = 10  # Setup your min temperature here
+        self.crud = Crud()
 
     def __del__(self):
         if self._hub_connection is not None:
@@ -80,7 +78,10 @@ class Main:
             date = data[0]["date"]
             temperature = float(data[0]["data"])
             self.take_action(temperature)
-            ##  Insert in DB, temperature + timestamp here
+            ##  Insert in DB, temperature + timestamp here 
+            self.crud.connect()
+            self.crud.insert_metric(Table.HVAC, "temperature", temperature)
+
         except Exception as err:
             print(err, flush=True)
 
@@ -101,7 +102,9 @@ class Main:
         """Save sensor data into database."""
         try:
             # To implement
-            pass
+            self.crud.connect()
+            self.crud.insert_metric(Table.HVAC_EVENTS,"event", event)
+            
         except requests.exceptions.RequestException as e:
             # To implement
             pass
