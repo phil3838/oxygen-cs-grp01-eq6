@@ -1,5 +1,5 @@
 # First stage: Build environment with all dependencies
-FROM python:3.11-alpine AS builder
+FROM python:3.8-alpine AS builder
 
 WORKDIR /build
 COPY Pipfile Pipfile.lock /build/
@@ -8,7 +8,7 @@ COPY Pipfile Pipfile.lock /build/
 RUN pip install pipenv && pipenv install --deploy --ignore-pipfile
 
 # Second stage: Setup the runtime environment
-FROM python:3.11-alpine
+FROM python:3.8-alpine
 
 WORKDIR /oxygen-cs-grp01-eq6
 
