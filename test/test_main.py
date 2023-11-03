@@ -4,7 +4,7 @@ This module serves to test main.py module.
 import unittest
 from unittest.mock import patch, MagicMock
 from src.main import Main
-
+from src.crud import Crud, Table
 
 class TestMain(unittest.TestCase):
     """
