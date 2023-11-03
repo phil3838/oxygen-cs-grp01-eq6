@@ -1,5 +1,5 @@
 """
-This module servesss to fetch the data and insert them in the database.
+This module serves to fetch the data and insert them in the database.
 """
 import json
 import time
