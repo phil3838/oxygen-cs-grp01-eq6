@@ -1,0 +1,8 @@
+[MESSAGES CONTROL]
+
+disable=missing-module-docstring,
+        missing-class-docstring,
+        missing-function-docstring,
+        no-value-for-parameter,
+        import-error,
+        similar-lines

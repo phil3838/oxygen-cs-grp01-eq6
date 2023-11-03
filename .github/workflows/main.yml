@@ -39,6 +39,10 @@ jobs:
       run: |
         pipenv run python3 -m unittest discover -s ./test
 
+    - name: Lint with Pylint
+      run: |
+        pylint --rcfile=.pylintrc myapp/
+
     - name: Static code analysis and format
       run: |
         pipenv run lint
