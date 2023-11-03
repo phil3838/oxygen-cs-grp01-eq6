@@ -1,29 +1,35 @@
-from signalrcore.hub_connection_builder import HubConnectionBuilder
-import logging
-import requests
+"""
+This module servesss to fetch the data and insert them in the database.
+"""
 import json
 import time
 from crud import Crud, Table
-
+import logging
+import requests
+from signalrcore.hub_connection_builder import HubConnectionBuilder
 
 class Main:
+    """
+    This is the main?? class responsible for managing connections and orchestrating
+    other operations.
+    """
+
     def __init__(self):
         """Setup environment variables and default values."""
         self._hub_connection = None
-        self.HOST = "https://hvac-simulator-a23-y2kpq.ondigitalocean.app"  # Setup your host here
-        self.TOKEN = "S1rN2enD5p"  # Setup your token here
-
+        self.host = "https://hvac-simulator-a23-y2kpq.ondigitalocean.app"  # Setup your host here
+        self.token = "S1rN2enD5p"  # Setup your token here
         self.TICKETS = 2  # Setup your tickets here
         self.T_MAX = 40  # Setup your max temperature here
         self.T_MIN = 10  # Setup your min temperature here
         self.crud = Crud()
 
     def __del__(self):
-        if self._hub_connection != None:
+        if self._hub_connection is not None:
             self._hub_connection.stop()
 
     def setup(self):
-        """Setup Oxygen CS."""
+        """Setup Oxygen CS"""
         self.set_sensorhub()
 
     def start(self):
@@ -39,7 +45,7 @@ class Main:
         """Configure hub connection and subscribe to sensor data events."""
         self._hub_connection = (
             HubConnectionBuilder()
-            .with_url(f"{self.HOST}/SensorHub?token={self.TOKEN}")
+            .with_url(f"{self.host}/SensorHub?token={self.token}")
             .configure_logging(logging.INFO)
             .with_automatic_reconnect(
                 {
@@ -53,10 +59,16 @@ class Main:
         )
 
         self._hub_connection.on("ReceiveSensorData", self.on_sensor_data_received)
-        self._hub_connection.on_open(lambda: print("||| Connection opened.", flush=True))
-        self._hub_connection.on_close(lambda: print("||| Connection closed.", flush=True))
+        self._hub_connection.on_open(
+            lambda: print("||| Connection opened.", flush=True)
+        )
+        self._hub_connection.on_close(
+            lambda: print("||| Connection closed.", flush=True)
+        )
         self._hub_connection.on_error(
-            lambda data: print(f"||| An exception was thrown closed: {data.error}", flush=True)
+            lambda data: print(
+                f"||| An exception was thrown closed: {data.error}", flush=True
+            )
         )
 
     def on_sensor_data_received(self, data):
@@ -69,19 +81,20 @@ class Main:
             ##  Insert in DB, temperature + timestamp here 
             self.crud.connect()
             self.crud.insert_metric(Table.HVAC, "temperature", temperature)
+
         except Exception as err:
             print(err, flush=True)
 
     def take_action(self, temperature):
         """Take action to HVAC depending on current temperature."""
-        if float(temperature) >= float(self.T_MAX):
+        if float(temperature) >= float(self.t_max):
             self.send_action_to_hvac("TurnOnAc")
-        elif float(temperature) <= float(self.T_MIN):
+        elif float(temperature) <= float(self.t_min):
             self.send_action_to_hvac("TurnOnHeater")
 
     def send_action_to_hvac(self, action):
         """Send action query to the HVAC service."""
-        r = requests.get(f"{self.HOST}/api/hvac/{self.TOKEN}/{action}/{self.TICKETS}")
+        r = requests.get(f"{self.host}/api/hvac/{self.token}/{action}/{self.tickets}")
         details = json.loads(r.text)
         print(details, flush=True)
 

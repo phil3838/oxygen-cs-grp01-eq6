@@ -1,0 +1,63 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.8
+
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.local/share/virtualenvs
+        key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-pipenv-
+
+    - name: Install Dependencies
+      run: |
+        pip install pipenv
+        pipenv install --dev
+
+    - name: List installed packages
+      run: |
+        pipenv run pip freeze
+
+    - name: Run unit tests
+      run: |
+        pipenv run python3 -m unittest discover -s ./test
+
+    - name: Lint with Pylint
+      run: |
+        pipenv run pylint --rcfile=.pylintrc src/ --fail-under=8
+
+    - name: Static code analysis and format
+      run: |
+        pipenv run lint
+        pipenv run format
+        pipenv run format-check
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+    - name: Build and push Docker image
+      run: |
+        docker build -t equipe06log680/oxygen .
+        docker tag equipe06log680/oxygen:latest equipe06log680/oxygen:${{ github.run_id }}
+        docker push equipe06log680/oxygen:latest
+        docker push equipe06log680/oxygen:${{ github.run_id }}

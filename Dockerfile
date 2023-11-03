@@ -1,11 +1,22 @@
-FROM python:3.8-slim
+# First stage: Build environment with all dependencies
+FROM python:3.8-alpine AS builder
 
-WORKDIR /oxygen-cs-grp01-eq6
+WORKDIR /build
+COPY Pipfile Pipfile.lock /build/
 
-COPY Pipfile Pipfile.lock /oxygen-cs-grp01-eq6/
 
 RUN pip install pipenv && pipenv install --deploy --ignore-pipfile
 
-COPY . /oxygen-cs-grp01-eq6
+# Second stage: Setup the runtime environment
+FROM python:3.8-alpine
+
+WORKDIR /oxygen-cs-grp01-eq6
+
+COPY --from=builder /build/Pipfile /build/Pipfile.lock /oxygen-cs-grp01-eq6/
+COPY --from=builder /root/.local/share/virtualenvs /root/.local/share/virtualenvs
+
+COPY src /oxygen-cs-grp01-eq6/src
+
+ENV PYTHONUNBUFFERED=1
 
 CMD ["pipenv", "run", "start"]
