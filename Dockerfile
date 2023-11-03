@@ -8,7 +8,7 @@ COPY Pipfile Pipfile.lock /build/
 RUN pip install pipenv && pipenv install --deploy --ignore-pipfile
 
 # Second stage: Setup the runtime environment
-FROM python:3.8-alpine
+FROM python:3.11-alpine
 
 WORKDIR /oxygen-cs-grp01-eq6
 
