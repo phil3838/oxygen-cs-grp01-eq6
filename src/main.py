@@ -19,9 +19,9 @@ class Main:
         self._hub_connection = None
         self.host = "https://hvac-simulator-a23-y2kpq.ondigitalocean.app"  # Setup your host here
         self.token = "S1rN2enD5p"  # Setup your token here
-        self.TICKETS = 2  # Setup your tickets here
-        self.T_MAX = 40  # Setup your max temperature here
-        self.T_MIN = 10  # Setup your min temperature here
+        self.tickets = 2  # Setup your tickets here
+        self.t_max = 40  # Setup your max temperature here
+        self.t_min = 10  # Setup your min temperature here
         self.crud = Crud()
 
     def __del__(self):
