@@ -11,7 +11,7 @@ from signalrcore.hub_connection_builder import HubConnectionBuilder
 
 class Main:
     """
-    This is the main class responsible for managing connections and orchestrating
+    This is the mainnn class responsible for managing connections and orchestrating
     other operations.
     """
 
