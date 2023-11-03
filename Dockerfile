@@ -1,5 +1,5 @@
 # First stage: Build environment with all dependencies
-FROM python:3.8-alpine AS builder
+FROM python:3.11-alpine AS builder
 
 WORKDIR /build
 COPY Pipfile Pipfile.lock /build/
